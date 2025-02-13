@@ -5,14 +5,14 @@ import paramiko
 # SSH details
 ssh_host = 'compsci.adelphi.edu'  # The SSH server IP or hostname
 ssh_port = 22  # SSH port, usually 22
-ssh_user = 'collinheaney'
+ssh_user = 'larrymoreno'
 ssh_key_path = ""  # Path to your private key for SSH authentication - insert the path to the private key
 ssh_password = ''#insert password here
 
 # MySQL details
 mysql_host = '127.0.0.1'  # MySQL server hostname (can be localhost if running on the same server)
 mysql_port = 3306  # MySQL port, usually 3306
-mysql_user = 'collinheaney'
+mysql_user = 'larrymoreno'
 mysql_password = ''
 mysql_database = 'collinheaney'
 
@@ -38,15 +38,12 @@ with SSHTunnelForwarder(
     
     # Perform database operations
     cursor = conn.cursor()
-    cursor.execute('SHOW TABLES;')
-    result = cursor.fetchone()
+    cursor.execute('use collinheaney;')
+    cursor.execute('SELECT * from dept;')
+    result = cursor.fetchall()
+    cursor.close()
 
-    # If no database is selected, print a message.
-    if result[0] is None:
-        print("Connected, but no database selected.")
-    else:
-        print(f"Connected to database: {result[0]}")
+    print(result)
     
     # Close the connection
-    cursor.close()
     conn.close()
