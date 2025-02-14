@@ -19,6 +19,10 @@ const HomePage = () => {
         <Link to="/tournaments" className="px-6 py-3 bg-gray-500 text-white rounded-lg shadow-md hover:bg-gray-600">
           View Tournaments
         </Link>
+        {/* route to registration */}
+        <Link to="/registration" className="px-6 py-3 bg-gray-500 text-white rounded-lg shadow-md hover:bg-gray-600">
+          Registration
+        </Link>
       </div>
     </div>
   );
