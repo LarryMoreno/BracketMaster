@@ -1,4 +1,7 @@
 import { useState } from "react";
+// Basic register form
+// TODO: see if I can make any improvements to the submit
+// also finalize if we need any other info from user for registration
 
 const RegisterForm = () => {
   const [formData, setFormData] = useState({
@@ -25,7 +28,7 @@ const RegisterForm = () => {
       const data = await response.json();
       if (response.ok) {
         alert("User registered successfully!");
-        setFormData({ username: "", email: "", password: "" }); // Clear form
+        setFormData({ username: "", email: "", password: "" });
       } else {
         alert(`Error: ${data.error}`);
       }
