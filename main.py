@@ -1,54 +1,24 @@
 import mysql.connector
-from sshtunnel import SSHTunnelForwarder
-import paramiko
 
-def SQL_INSERT(userID, insert_username, insert_password, email, role):
-    # SSH details
-    ssh_host = 'compsci.adelphi.edu'  # The SSH server IP or hostname
-    ssh_port = 22  # SSH port, usually 22
-    ssh_user = 'collinheaney'
-    ssh_key_path = ""  # Path to your private key for SSH authentication - insert the path to the private key
-    ssh_password = ''#insert password here
+# db config
+DB_CONFIG = {
+    "user": "root", 
+    "password": "miKyzuiAhcgWWfObFMUPFcXEzCexUzbX",
+    "host": "tramway.proxy.rlwy.net",
+    "port": 51041,
+    "database": "railway",
+}
 
-    # MySQL details
-    mysql_host = '127.0.0.1'  # MySQL server hostname (can be localhost if running on the same server)
-    mysql_port = 3306  # MySQL port, usually 3306
-    mysql_user = 'collinheaney'
-    mysql_password = ''
-    mysql_database = 'collinheaney'
-
-    # SSH tunneling setup
-    with SSHTunnelForwarder(
-        (ssh_host, ssh_port),
-        ssh_username=ssh_user,
-        ssh_pkey=ssh_key_path,
-        ssh_password=ssh_password,
-        remote_bind_address=(mysql_host, mysql_port)
-    ) as tunnel:
-        # Now the local port `tunnel.local_bind_port` is forwarded to the MySQL server over SSH
-        print(f'SSH Tunnel opened on local port {tunnel.local_bind_port}')
-        
-        # Connecting to the MySQL database through the SSH tunnel
-        conn = mysql.connector.connect(
-            user=mysql_user,
-            password=mysql_password,
-            host='127.0.0.1',  # Connect to the local end of the SSH tunnel
-            port=tunnel.local_bind_port,  # Local bind port from the tunnel
-            database=mysql_database
-        )
-        
-        # Perform database operations
+# insert
+def SQL_INSERT(userID, username, password, email, role):
+    try:
+        conn = mysql.connector.connect(**DB_CONFIG)
         cursor = conn.cursor()
         query = "INSERT INTO user (userID, username, password, email, role) VALUES (%s, %s, %s, %s, %s)"
-        print("success")
-        cursor.execute(query, (userID, insert_username, insert_password, email, role))
+        cursor.execute(query, (userID, username, password, email, role))
         conn.commit()
         cursor.close()
-        
-        # Close the connection
         conn.close()
-
-    #return jsonify({"message": "User registered successfully"}), 201
-
-
-SQL_INSERT('005', 'collin3', 'password3', 'collin3@mail.com', 'member')
+        print("✅ User inserted successfully.")
+    except mysql.connector.Error as err:
+        print(f"❌ Database Error: {err}")

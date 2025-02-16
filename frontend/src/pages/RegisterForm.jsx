@@ -16,6 +16,12 @@ const RegisterForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!formData.username || !formData.email || !formData.password) {
+      alert("Please fill in all the fields.");
+      return;
+    }
+
     try {
       const response = await fetch("http://127.0.0.1:5000/register", {
         method: "POST",
@@ -26,6 +32,7 @@ const RegisterForm = () => {
       });
 
       const data = await response.json();
+
       if (response.ok) {
         alert("User registered successfully!");
         setFormData({ username: "", email: "", password: "" });
@@ -34,6 +41,7 @@ const RegisterForm = () => {
       }
     } catch (error) {
       console.error("Error submitting form:", error);
+      alert("There was an error with the registration. Please try again.");
     }
   };
 
