@@ -18,3 +18,11 @@ pip install flask_bcrypt
 pip install flask_wtf
 pip install wtfforms
 pip install emailvalidator
+
+<h3>Steps to Run</h3>
+
+To run the server:
+python3 app.py
+
+To run the Bracket Master site:
+From the frontend directory run 'npm run dev'
