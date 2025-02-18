@@ -19,6 +19,7 @@ def SQL_INSERT(userID, username, password, email, role):
         conn.commit()
         cursor.close()
         conn.close()
-        print("✅ User inserted successfully.")
+        return "✅ User inserted successfully."
     except mysql.connector.Error as err:
-        print(f"❌ Database Error: {err}")
+        #print(f"❌ Database Error: {err}")
+        return "Database error"
