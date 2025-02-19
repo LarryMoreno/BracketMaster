@@ -22,12 +22,12 @@ def register_user():
     data = request.json  # frontend data
 
     username = data.get("username")
-    email = data.get("email")
     password = data.get("password")
+    email = data.get("email")
     role = 'member' # default role, set as member for now
 
     # check if everything is provided (all fields submitted)
-    if not username or not email or not password:
+    if not username or not password or not email:
         return jsonify({"error": "Missing required fields"}), 400
 
     # hashing the password
@@ -42,7 +42,7 @@ def register_user():
         conn.commit()
         cursor.close()
         conn.close()
-        return jsonify({"message": "User registered successfully"}), 201
+        return jsonify({"message": "User registered successfully"}), 200
     except mysql.connector.Error as err:
         return jsonify({"error": f"Database error: {err}"}), 500
 
