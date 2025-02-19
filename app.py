@@ -16,6 +16,7 @@ DB_CONFIG = {
 }
 
 
+# TODO: fix login functionality
 @app.route('/register', methods=['POST'])
 def register_user():
     data = request.json  # frontend data
@@ -44,6 +45,30 @@ def register_user():
         return jsonify({"message": "User registered successfully"}), 201
     except mysql.connector.Error as err:
         return jsonify({"error": f"Database error: {err}"}), 500
+
+def login():
+    data = request.json
+    email = data["email"]
+    password = data["password"]
+
+    # check if one of the fields for login is missing
+    if not email or not password:
+        return jsonify({"error": "Missing fields"}), 400
+
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    cursor.execute("SELECT * FROM user WHERE email = %s", (email,))
+    user = cursor.fetchone()
+    cursor.close()
+    conn.close()
+
+    if user and bcrypt.check_password_hash(user["password"], password):
+        access_token = create_access_token(identity={"userID": user["userID"], "role": user["role"]})
+        return jsonify({"message": "Login successful", "token": access_token}), 200
+    else:
+        return jsonify({"error": "Invalid email or password"}), 401
+
 
 if __name__ == '__main__':
     app.run(debug=True)
