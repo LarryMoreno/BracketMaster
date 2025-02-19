@@ -1,28 +1,20 @@
-# BracketMaster
-An application designed to allow local communities to create, manage and modify tournament brackets.
+<h3>Pip Installs</h3>
+flask
+flask_cors
+mysql.connector
+bcrypt
+jsonify
+Flask
+requests
+CORS
 
-ALL PIP INSTALLS
-pip install virtualenv
+<h3>Installs</h3>
+node.js via website
+npm install via terminal
 
-env\Scripts\activate
+<h3>VSCode Execution</h3>
+python app.py from terminal (python3 app.py)
+cd in to the frontend folder, npm run dev
 
-pip install mysql
-
-pip install mysql.connector
-pip install sshtunnel
-pip install flask flask-sqlalchemy
-
-pip install npm
-pip install flask_login
-pip install flask_bcrypt
-pip install flask_wtf
-pip install wtfforms
-pip install emailvalidator
-
-<h3>Steps to Run</h3>
-
-To run the server:
-python3 app.py
-
-To run the Bracket Master site:
-From the frontend directory run 'npm run dev'
+<h3>Notes</h3>
+If there is an issue when registering data into registration tab, enter pip install --upgrade mysql-connector-python
