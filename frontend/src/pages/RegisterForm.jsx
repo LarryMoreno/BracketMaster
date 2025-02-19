@@ -6,8 +6,8 @@ import { useState } from "react";
 const RegisterForm = () => {
   const [formData, setFormData] = useState({
     username: "",
-    email: "",
     password: "",
+    email: "",
   });
 
   const handleChange = (e) => {
@@ -17,7 +17,7 @@ const RegisterForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!formData.username || !formData.email || !formData.password) {
+    if (!formData.username || !formData.password || !formData.email) {
       alert("Please fill in all the fields.");
       return;
     }
@@ -35,7 +35,7 @@ const RegisterForm = () => {
 
       if (response.ok) {
         alert("User registered successfully!");
-        setFormData({ username: "", email: "", password: "" });
+        setFormData({ username: "", password: "", email: "" });
       } else {
         alert(`Error: ${data.error}`);
       }
