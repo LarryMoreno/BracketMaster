@@ -3,11 +3,15 @@ from flask_cors import CORS
 import mysql.connector
 import bcrypt
 import uuid
-from flask_jwt_extended import create_access_token
+from flask_jwt_extended import JWTManager, create_access_token
 
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
+
+# JWT secret key for user auth
+app.config['JWT_SECRET_KEY'] = 'my_jwt_secret_key'
+jwt = JWTManager(app)
 
 # config for the railway database
 DB_CONFIG = {
