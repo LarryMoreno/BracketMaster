@@ -2,6 +2,9 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import mysql.connector
 import bcrypt
+import uuid
+from flask_jwt_extended import create_access_token
+
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
@@ -27,7 +30,7 @@ DB_CONFIG = {
 def register_user():
     data = request.json  # frontend data
 
-    userID = '007'
+    userID = str(uuid.uuid4())  # generating a unique id for every user
     username = data.get("username")
     password = data.get("password")
     email = data.get("email")
@@ -51,7 +54,7 @@ def register_user():
         conn.close()
 
     # hashing the password
-    #hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+    hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
 
     # insert the user into the DB, return an error if DB err
     try:
