@@ -16,5 +16,9 @@ npm install via terminal
 python app.py from terminal (python3 app.py)
 cd in to the frontend folder, npm run dev
 
+<h3>PyTest Unit Testing</h3>
+Make sure pytest is the is the testing framework with ctrl + Shift + P and typing Python: Configure Test
+Additionally make sure the python is the designated interpreter
+
 <h3>Notes</h3>
 If there is an issue when registering data into registration tab, enter pip install --upgrade mysql-connector-python
