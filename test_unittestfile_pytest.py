@@ -35,3 +35,19 @@ def test_account_creation_username_exists(client):
 
     assert response.status_code == 409
     assert response.json['error'] == 'Username already exists'
+
+#testing that an account cannot be created where the username has 16 or more characters
+def test_account_registration_username_too_long(client):
+    json_data = {
+        "userID": "010",
+        "username" : "abcdefghijklmnopq",
+        "password" : "password",
+        "email" : "email@email.com",
+        "role" : "member"
+    }
+
+    response = client.post('/register', json=json_data)
+
+    assert response.status_code == 410
+    assert response.json['error'] == 'Username is too many characters'
+
