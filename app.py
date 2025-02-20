@@ -21,6 +21,7 @@ DB_CONFIG = {
 def register_user():
     data = request.json  # frontend data
 
+    userID = '006'
     username = data.get("username")
     password = data.get("password")
     email = data.get("email")
@@ -37,8 +38,8 @@ def register_user():
     try:
         conn = mysql.connector.connect(**DB_CONFIG)
         cursor = conn.cursor()
-        query = "INSERT INTO user (username, password, email, role) VALUES (%s, %s, %s, %s)"
-        cursor.execute(query, (username, hashed_password, email, role))
+        query = "INSERT INTO user (userID, username, password, email, role) VALUES (%s, %s, %s, %s, %s)"
+        cursor.execute(query, (userID, username, hashed_password, email, role))
         conn.commit()
         cursor.close()
         conn.close()
@@ -58,7 +59,7 @@ def login():
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
 
-    cursor.execute("SELECT * FROM user WHERE email = %s", (email,))
+    cursor.execute("SELECT * FROM User WHERE email = %s", (email,))
     user = cursor.fetchone()
     cursor.close()
     conn.close()
