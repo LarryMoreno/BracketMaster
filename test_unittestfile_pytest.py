@@ -97,11 +97,11 @@ def test_account_registration_username_special_charcter(client):
     assert response.status_code == 412
     assert response.json['error'] == 'Username contains a special character'
 
-#testing that an account cannot be created where a password contains 16 or more characters
+#testing that an account cannot be created where a password contains 21 or more characters
 def test_account_registration_password_too_long(client):
     json_data = {
         "username" : "newuser1",
-        "password" : "Thisisapassword!",
+        "password" : "Thississapassssword!!",
         "email" : "cemail3@amail.com",
     }
 
@@ -110,11 +110,11 @@ def test_account_registration_password_too_long(client):
     assert response.status_code == 413
     assert response.json['error'] == 'Password contains too many characters'
 
-#testing that an account can be created where a password contains 15 characters
+#testing that an account can be created where a password contains 20 characters
 def test_account_registration_password_upper_boundary(client):
     json_data = {
         "username" : "newuser1",
-        "password" : "Thisisapasswor!",
+        "password" : "Thississapasssword!!",
         "email" : "ecmail4@amail.com",
     }
 
