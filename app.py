@@ -15,13 +15,19 @@ DB_CONFIG = {
     "database": "railway",
 }
 
-
-# TODO: fix login functionality
+#app route for the register page
 @app.route('/register', methods=['POST'])
+
+#register_user() - the function on the /register page for a user to register into the BracketMaster system
+#userID - the identifier (primary key) for the member
+#username - the name of the user account
+#password - the password designated to the user account
+#email - the email account that belongs to the user
+#role - the designated permissions for when a user is registered (always will be set to member)
 def register_user():
     data = request.json  # frontend data
 
-    userID = '006'
+    userID = '007'
     username = data.get("username")
     password = data.get("password")
     email = data.get("email")
@@ -30,6 +36,19 @@ def register_user():
     # check if everything is provided (all fields submitted)
     if not username or not password or not email:
         return jsonify({"error": "Missing required fields"}), 400
+    
+    #checking if a username already exists
+    try:
+        conn = mysql.connector.connect(**DB_CONFIG)
+        cursor = conn.cursor()
+        cursor.execute("SELECT username FROM user WHERE username = %s", (username,))
+        if cursor.fetchone():
+            return jsonify({"error": "Username already exists"}), 409
+    except mysql.connector.Error as err:
+        return jsonify({"error": f"Database error: {err}"}), 500
+    finally:
+        cursor.close()
+        conn.close()
 
     # hashing the password
     hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
