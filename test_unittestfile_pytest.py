@@ -1,6 +1,20 @@
-import main
-import app
+import pytest
+from app import app
 
-def test_account_creation_username_exists():
-    assert main.SQL_INSERT("103", "cheaney", "testpassword", "collin@gmail.com", "member") == "✅ User inserted successfully."
+@pytest.fixture
+def client():
+    with app.test_client() as client:
+        yield client
 
+def test_account_registration_success(client):
+    json_data = {
+        "userID": "004",
+        "username" : "username",
+        "password" : "password",
+        "email" : "email@email.com",
+        "role" : "member"
+    }
+
+    response = client.post('/register', json=json_data)
+
+    assert response.status_code == 200
