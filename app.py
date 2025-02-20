@@ -5,7 +5,6 @@ import bcrypt
 import uuid
 from flask_jwt_extended import JWTManager, create_access_token
 
-
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
 
@@ -56,11 +55,71 @@ def register_user():
     finally:
         cursor.close()
         conn.close()
-
-    #checking if the length of the username is too long
+    
+    #checking if the length of the username is 16 or more characters
     if len(username) >= 16:
         return jsonify({"error": "Username is too many characters"}), 410
-        
+    
+    #checking if the length of the username is 5 or less characters
+    if len(username) <= 5:
+        return jsonify({"error": "Username has too few characters"}), 411
+    
+    #checking if a character in username is a special character
+    for i in username:
+        if not i.isalnum():
+            return jsonify({"error": "Username contains a special character"}), 412
+    
+    #checking if the length of the password is 16 or more characters
+    if len(password) >= 16:
+        return jsonify({"error": "Password contains too many characters"}), 413
+    
+    #checking if the length of the password is 5 or less characters
+    if len(password) <= 5:
+        return jsonify({"error": "Password contains too few characters"}), 414
+    
+    #checking if the password contains an uppercase character
+    #pass_up_counter - counter used to determine if there is an uppercase character in password, set to true when one is found
+    pass_up_counter = False
+    for i in password:
+        if i.isupper():
+            pass_up_counter = True
+    if pass_up_counter is False:
+        return jsonify({"error": "Password does not contain an uppercase character"}), 415
+    
+    #checking if the password contains a special character
+    #pass_up_counter - counter used to determine if there is a special character in password, set to true when one is found
+    pass_spec_char_counter = False
+    for i in password:
+        if not i.isalnum():
+            pass_spec_char_counter = True
+    if pass_spec_char_counter is False:
+        return jsonify({"error": "Password does not contain a special character"}), 416
+    
+    #checking if an email already exists
+    try:
+        conn = mysql.connector.connect(**DB_CONFIG)
+        cursor = conn.cursor()
+        cursor.execute("SELECT username FROM user WHERE email = %s", (email,))
+        if cursor.fetchone():
+            return jsonify({"error": "Email already exists"}), 417
+    except mysql.connector.Error as err:
+        return jsonify({"error": f"Database error: {err}"}), 500
+    finally:
+        cursor.close()
+        conn.close()
+
+    #checking if the length of the email is 35 or more characters
+    if len(email) >= 35:
+        return jsonify({"error": "Email contains too many characters"}), 418
+    
+    #checking if the length of the email is 15 or less characters
+    if len(email) <= 15:
+        return jsonify({"error": "Email contains too few characters"}), 419
+    
+    #checking if the email string is missing the @ character
+    if not email.__contains__('@') or not email.__contains__('.'):
+        return jsonify({"error": "Email missing special @ or . character"}), 420
+
     # hashing the password
     hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
 
@@ -77,8 +136,6 @@ def register_user():
     except mysql.connector.Error as err:
         return jsonify({"error": f"Database error: {err}"}), 500
 
-
-@app.route('/login', methods=['POST'])
 def login():
     data = request.json
     email = data["email"]
@@ -88,15 +145,15 @@ def login():
     if not email or not password:
         return jsonify({"error": "Missing fields"}), 400
 
-    conn = mysql.connector.connect(**DB_CONFIG)
+    conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
 
-    cursor.execute("SELECT * FROM user WHERE email = %s", (email,))
+    cursor.execute("SELECT * FROM User WHERE email = %s", (email,))
     user = cursor.fetchone()
     cursor.close()
     conn.close()
 
-    if user and bcrypt.checkpw(password.encode('utf-8'), user["password"].encode('utf-8')):
+    if user and bcrypt.check_password_hash(user["password"], password):
         access_token = create_access_token(identity={"userID": user["userID"], "role": user["role"]})
         return jsonify({"message": "Login successful", "token": access_token}), 200
     else:
