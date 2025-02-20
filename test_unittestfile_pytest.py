@@ -18,3 +18,4 @@ def test_account_registration_success(client):
     response = client.post('/register', json=json_data)
 
     assert response.status_code == 200
+    assert response.json['message'] == 'User registered successfully'
