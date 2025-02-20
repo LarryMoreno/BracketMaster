@@ -50,8 +50,12 @@ def register_user():
         cursor.close()
         conn.close()
 
+    #checking if the length of the username is too long
+    if len(username) >= 16:
+        return jsonify({"error": "Username is too many characters"}), 410
+        
     # hashing the password
-    #hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+    hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
 
     # insert the user into the DB, return an error if DB err
     try:
