@@ -116,7 +116,7 @@ def register_user():
     if len(email) <= 10:
         return jsonify({"error": "Email contains too few characters"}), 419
     
-    #checking if the email string is missing the @ character
+    #checking if the email string is missing the @ or . character
     if not email.__contains__('@') or not email.__contains__('.'):
         return jsonify({"error": "Email missing special @ or . character"}), 420
 
