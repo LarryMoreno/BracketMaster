@@ -136,6 +136,8 @@ def register_user():
     except mysql.connector.Error as err:
         return jsonify({"error": f"Database error: {err}"}), 500
 
+
+@app.route('/login', methods=['POST'])
 def login():
     data = request.json
     email = data["email"]
@@ -145,15 +147,15 @@ def login():
     if not email or not password:
         return jsonify({"error": "Missing fields"}), 400
 
-    conn = get_db_connection()
+    conn = mysql.connector.connect(**DB_CONFIG)
     cursor = conn.cursor(dictionary=True)
 
-    cursor.execute("SELECT * FROM User WHERE email = %s", (email,))
+    cursor.execute("SELECT * FROM user WHERE email = %s", (email,))
     user = cursor.fetchone()
     cursor.close()
     conn.close()
 
-    if user and bcrypt.check_password_hash(user["password"], password):
+    if user and bcrypt.checkpw(password.encode('utf-8'), user["password"].encode('utf-8')):
         access_token = create_access_token(identity={"userID": user["userID"], "role": user["role"]})
         return jsonify({"message": "Login successful", "token": access_token}), 200
     else:
