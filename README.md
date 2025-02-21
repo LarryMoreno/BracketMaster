@@ -16,7 +16,8 @@ npm install via terminal
 
 <h3>VSCode Execution</h3>
 In a terminal, enter python app.py (python3 app.py) <br/>
-In a new terminal, cd in to the frontend folder, enter npm run dev
+In a new terminal, cd in to the frontend folder, enter npm run dev <br/>
+To run the pytests, click on the test_unittestfile_pytest.py and click to configure the pytest at the beaker icon in VSCode. A Ctrl + Shft + P may be needed to manually configure tests and select the python interpreter
 
 <h3>PyTest Unit Testing</h3>
 Make sure pytest is the is the testing framework with ctrl + Shift + P and typing Python: Configure Test
