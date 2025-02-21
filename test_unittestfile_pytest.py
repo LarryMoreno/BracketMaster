@@ -32,10 +32,10 @@ def test_account_registration_username_exists(client):
     assert response.status_code == 409
     assert response.json['error'] == 'Username already exists'
 
-#testing that an account cannot be created where a username contains 16 or more characters
+#testing that an account cannot be created where a username contains 21 or more characters
 def test_account_registration_username_too_long(client):
     json_data = {
-        "username" : "abcdefghijklmnop",
+        "username" : "abcdefghijklmnopqrstu",
         "password" : "Password!",
         "email" : "cemail@cmail.com",
     }
@@ -214,12 +214,12 @@ def test_account_registration_email_upper_boundary(client):
     assert response.status_code == 200
     assert response.json['message'] == 'User registered successfully'
 
-#testing that an account cannot be created where an email contains 15 or less characters
+#testing that an account cannot be created where an email contains 10 or less characters
 def test_account_registration_email_too_short(client):
     json_data = {
         "username" : "newuser5",
         "password" : "Testt!",
-        "email" : "abcdef@mail.com",
+        "email" : "a@mail.com",
     }
 
     response = client.post('/register', json=json_data)
@@ -227,12 +227,12 @@ def test_account_registration_email_too_short(client):
     assert response.status_code == 419
     assert response.json['error'] == 'Email contains too few characters'
 
-#testing that an account can be created where an email contains 16 characters
+#testing that an account can be created where an email contains 11 characters
 def test_account_registration_email_lower_boundary(client):
     json_data = {
         "username" : "newuser5",
         "password" : "Testt!",
-        "email" : "abcdef@gmail.com",
+        "email" : "ab@gmail.com",
     }
 
     response = client.post('/register', json=json_data)
@@ -266,3 +266,14 @@ def test_account_registration_email_missing_char_dot(client):
     assert response.status_code == 420
     assert response.json['error'] == 'Email missing special @ or . character'
 
+#testing that an account cannot be signed into that does not exist
+def test_account_login_email_does_not_exist(client):
+    json_data = {
+        "email" : "cooljohnguy@gmail.com",
+        "password" : "IamJohn@27",
+    }
+
+    response = client.post('/login', json=json_data)
+
+    assert response.status_code == 401
+    assert response.json['error'] == 'Invalid email or password'
