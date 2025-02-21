@@ -7,14 +7,16 @@ jsonify
 Flask
 requests
 CORS
+flask_jwt_extended
+uuid
 
 <h3>Installs</h3>
 node.js via website
 npm install via terminal
 
 <h3>VSCode Execution</h3>
-python app.py from terminal (python3 app.py)
-cd in to the frontend folder, npm run dev
+In a terminal, enter python app.py (python3 app.py) <br/>
+In a new terminal, cd in to the frontend folder, enter npm run dev
 
 <h3>PyTest Unit Testing</h3>
 Make sure pytest is the is the testing framework with ctrl + Shift + P and typing Python: Configure Test
