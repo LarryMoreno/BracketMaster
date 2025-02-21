@@ -69,8 +69,8 @@ def register_user():
         if not i.isalnum():
             return jsonify({"error": "Username contains a special character"}), 412
     
-    #checking if the length of the password is 16 or more characters
-    if len(password) >= 16:
+    #checking if the length of the password is 21 or more characters
+    if len(password) >= 21:
         return jsonify({"error": "Password contains too many characters"}), 413
     
     #checking if the length of the password is 5 or less characters
@@ -112,8 +112,8 @@ def register_user():
     if len(email) >= 35:
         return jsonify({"error": "Email contains too many characters"}), 418
     
-    #checking if the length of the email is 15 or less characters
-    if len(email) <= 15:
+    #checking if the length of the email is 10 or less characters
+    if len(email) <= 10:
         return jsonify({"error": "Email contains too few characters"}), 419
     
     #checking if the email string is missing the @ character
