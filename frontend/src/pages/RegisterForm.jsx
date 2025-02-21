@@ -1,3 +1,4 @@
+import React from "react";
 import { useState } from "react";
 // Basic register form
 // TODO: see if I can make any improvements to the submit
