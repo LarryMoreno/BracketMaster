@@ -18,7 +18,7 @@ class Bracket():
     bracket_list = []
     #self.bracket_list = [[] for _ in range(2)]
     
-    #Creates a list to manage location/pairings of teams in bracket
+    #Adds an entry to the bracket table essentially creating a tournament 
     def createBracket(self, bracketID, bracketName, eventType, bracketType, userID):
         bracket_query = """
         INSERT INTO team (bracketID, bracketName, eventType, bracketType, userID)
@@ -28,6 +28,8 @@ class Bracket():
 
         cursor.execute(bracket_query, values)
         conn.commit()
+
+        print(f"Bracket {bracketName} added successfully.")
 
     #Adds team into database table team    
     def createTeam(self, teamID, teamName, teamPlayerCount, teamLocation, teamLeader):
@@ -39,6 +41,8 @@ class Bracket():
 
         cursor.execute(insert_query, values)
         conn.commit()
+
+        print(f"Team {teamName} added successfully.")
 
     #Removes team from database table team     
     def deleteTeam(self, teamID):
@@ -81,6 +85,8 @@ class Bracket():
         values = (teamLocation, teamID,)
 
         cursor.execute(assign_query, values)
+
+        print(f"Team with ID {teamID} now assigned to bracket {teamLocation}.")
 
     #Randomly assigns bracket number to all teams
     def assignAllBracketNumber(self, bracketID):
@@ -128,16 +134,25 @@ class Bracket():
 
         cursor.execute(team_query, values)
 
+        print(f"Team with ID {teamID} now assigned to Bracket Match {bracketID}.")
 
+    def removeBracket(self, bracketID):
+        delete_query = """
+        DELETE FROM bracket
+        WHERE bracketID = %s
+        """
+        values = (bracketID,)
+
+        cursor.execute(delete_query, values)
+        conn.commit()
+
+        print(f"Bracket with ID {bracketID} deleted successfully.")
 
     #
     # The below functions are from an original idea of the bracket class
     # These should not be used, they are just a reference for future functions developed
     #
 
-    def restartBracket(self):
-        self.bracket_list.clear()
-        self.createBracket()
         
     def moveTeamForward(self):
         #Update position in database
@@ -163,17 +178,11 @@ class Bracket():
 
 # Tesiting around with functions
 game = Bracket()
-game.listTeams('BK01')
-game.assignAllBracketNumber('BK01')
+
+#game.listTeams('BK01')
+#game.assignAllBracketNumber('BK01')
 game.listTeams('BK01')
 
 print("-----------------------------------")
 
-game.listTeams('BK02')
-game.assignAllBracketNumber('BK02')
-game.listTeams('BK02')
-
-
-print("-----------------------------------")
-
-game.listTeams('BK01')
+game.removeBracket("BK01")
