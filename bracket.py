@@ -114,7 +114,7 @@ class Bracket():
         print(f"Team with ID {teamID} now removed from Bracket Match {bracketID}.")    
     
     # Displays all the team participants in the bracket
-    def listTeams(self, bracketID):
+    def displayTeams(self, bracketID):
         list_query = """
         SELECT t.teamName, t.teamPlayerCount, t.teamLocation
         FROM team t
@@ -189,4 +189,36 @@ class Bracket():
 
                 conn.commit()
         print(f"Teams have been randomly assigned to {bracket_number - 1} bracket(s).")
+
+    # Returns all information on specific bracket
+    def getBracketInfo(self, bracketID):
+        print("placeholder")
+
+    # Returns all information on specific team
+    def getTeamInfo(self, teamID):
+        print("placeholder")
+
+    # Returns only position based on teamID
+    def getTeamPosition(self, teamID):
+        print("placeholder")
+    
+    # Return total number of brackets
+    def getTotalBrackets(self, bracketID):
+        getAllTeams_query = """
+        SELECT t.teamID 
+        FROM team t
+        JOIN teambracket tb ON t.teamID = tb.teamID
+        WHERE tb.bracketID = %s
+        """
+        values = (bracketID,)
+
+        with connectToDatabase() as conn:
+            with conn.cursor() as cursor:
+                cursor.execute(getAllTeams_query, values)
+                teams = cursor.fetchall()
+
+        print(f"Total brackets for {bracketID} is {len(teams) // 2}")
+        return (len(teams) // 2)
+
+        
 

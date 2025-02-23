@@ -1,6 +1,5 @@
 from bracket import Bracket
 import mysql.connector
-import random
 
 # DB Configuration
 DB_CONFIG = {
@@ -17,8 +16,20 @@ def connectToDatabase():
 
 class BracketGame(Bracket):
 
-    def placeholder():
+    def __init__(self):
+        self.currentRound = 1
+
+    def startGame(self, bracketID):
         print("Placeholder")
+
+    def nextRound(self):
+        print("Placeholder")
+
+    def getRoundWinner(self, teamLocation):
+        print("Placeholder")
+
+    def declareWinner(self, teamID):
+        print("Placeholder")    
 
 
 # Test
