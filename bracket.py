@@ -135,7 +135,7 @@ class Bracket():
 
     # Assign bracket number for a team
     # Ex. bracket has 2 brackets for 4 teams, 2 teams per bracket so TM01 and TM02 are in bracket 1, etc.
-    def assignSingleBracketNumber(self, teamLocation, teamID):
+    def assignSingleBracketNumber(self, teamID, teamLocation):
         assign_query = """
         UPDATE team
         SET teamLocation = %s
@@ -196,11 +196,49 @@ class Bracket():
 
     # Returns all information on specific team
     def getTeamInfo(self, teamID):
-        print("placeholder")
+        get_query = """
+        SELECT teamID, teamName, teamPlayerCount, teamLocation, teamLeader
+        FROM team
+        WHERE teamID = %s
+        """
+        values = (teamID,)
+
+        with connectToDatabase() as conn:
+            with conn.cursor() as cursor:
+                cursor.execute(get_query, values)
+                team_info = cursor.fetchone() 
+
+        if team_info:
+            print(f"Team ID: {team_info[0]}")
+            print(f"Team Name: {team_info[1]}")
+            print(f"Player Count: {team_info[2]}")
+            print(f"Team Location: {team_info[3]}")
+            print(f"Team Leader: {team_info[4]}")
+        else:
+            print(f"No team found with ID: {teamID}")
 
     # Returns only position based on teamID
-    def getTeamPosition(self, teamID):
-        print("placeholder")
+    def getTeamsBasedOnPosition(self, teamLocation):
+        query = """
+        SELECT t.teamID
+        FROM team t
+        JOIN teambracket tb ON t.teamID = tb.teamID
+        WHERE t.teamLocation = %s
+        LIMIT 2
+        """
+        
+        values = (teamLocation,)
+
+        with connectToDatabase() as conn:
+            with conn.cursor() as cursor:
+                cursor.execute(query, values)
+                teams = cursor.fetchall()
+
+        if not teams:
+            print(f"No teams found for teamLocation: {teamLocation}.")
+            return []
+        
+        return [team[0] for team in teams]
     
     # Return total number of brackets
     def getTotalBrackets(self, bracketID):

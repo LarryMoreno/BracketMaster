@@ -41,7 +41,7 @@ insert_query4 = """
     INSERT INTO teambracket (bracketID, teamID)
     VALUES (%s, %s)
 """
-values4 = ('BK02', 'TM06')
+values4 = ('BK02', 'TM04')
 
 
 assign_query = """
