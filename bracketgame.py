@@ -28,7 +28,7 @@ class BracketGame(Bracket):
         if total > 0 and (total & (total - 1)) == 0:
             print(f"{total} Valid number of teams")
         else:
-            print(f"{total} Invalid number of teams")
+            print(f"{total} Invalid number  of teams")
             return
         
         self.assignAllBracketNumber(bracketID)
@@ -79,7 +79,3 @@ class BracketGame(Bracket):
         self.getTeamInfo(teamID)
         print("***********************************")
 
-
-# Test
-game = BracketGame()
-game.startGame("BK02")

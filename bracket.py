@@ -21,17 +21,24 @@ class Bracket():
     # Adds an entry to the bracket table essentially creating a tournament 
     def createBracket(self, bracketID, bracketName, eventType, bracketType, userID):
         bracket_query = """
-        INSERT INTO team (bracketID, bracketName, eventType, bracketType, userID)
+        INSERT INTO bracket (bracketID, bracketName, eventType, bracketType, userID)
         VALUES (%s, %s, %s, %s, %s)
         """
         values = (bracketID, bracketName, eventType, bracketType, userID)
 
-        with connectToDatabase() as conn:
-            with conn.cursor() as cursor:
-                cursor.execute(bracket_query, values)
-                conn.commit()
-
-        print(f"Bracket {bracketName} added successfully.")
+        try: 
+            with connectToDatabase() as conn:
+                with conn.cursor() as cursor:
+                    cursor.execute(bracket_query, values)
+                    conn.commit()
+            success_message = f"Bracket {bracketName} added successfully."
+            print(success_message)
+            return success_message
+        
+        except mysql.connector.IntegrityError as e:
+            error_message = f"Error: Bracket {bracketName} is already in Bracket table."
+            print(error_message)
+            return error_message
 
     # Removes bracket from database table bracket. This also removes any assigned entried in teambracket table
     def deleteBracket(self, bracketID):
@@ -45,8 +52,11 @@ class Bracket():
             with conn.cursor() as cursor:
                 cursor.execute(delete_query, values)
                 conn.commit()
-
-        print(f"Bracket with ID {bracketID} deleted successfully.")
+                
+            success_message = f"Bracket {bracketID} deleted successfully."
+            print(success_message)
+            return success_message
+        
 
     # Adds team into database table team    
     def createTeam(self, teamID, teamName, teamPlayerCount, teamLocation, teamLeader):
@@ -56,12 +66,19 @@ class Bracket():
         """
         values = (teamID, teamName, teamPlayerCount, teamLocation, teamLeader)
 
-        with connectToDatabase() as conn:
-            with conn.cursor() as cursor:
-                cursor.execute(insert_query, values)
-                conn.commit()
-
-        print(f"Team {teamName} added successfully.")
+        try:
+            with connectToDatabase() as conn:
+                with conn.cursor() as cursor:
+                    cursor.execute(insert_query, values)
+                    conn.commit()
+            success_message = f"Team {teamName} added successfully."
+            print(success_message)
+            return success_message
+                
+        except mysql.connector.IntegrityError as e:
+            error_message = f"Error: Team {teamName} is already in team table."
+            print(error_message)
+            return error_message
 
     # Removes team from database table team     
     def deleteTeam(self, teamID):
@@ -75,8 +92,10 @@ class Bracket():
             with conn.cursor() as cursor:
                 cursor.execute(delete_query, values)
                 conn.commit()
-
-        print(f"Team with ID {teamID} deleted successfully.")
+                
+            success_message = f"Team with ID {teamID} deleted successfully."
+            print(success_message)
+            return success_message
 
     # Adds team to specific bracket
     def addTeamToBracket(self, teamID, bracketID):
@@ -91,12 +110,14 @@ class Bracket():
                 with conn.cursor() as cursor:
                     cursor.execute(team_query, values)
                     conn.commit()
-
-            print(f"Team with ID {teamID} now assigned to Bracket Match {bracketID}.")
-
+            success_message = f"Team with ID {teamID} now assigned to Bracket Match {bracketID}."
+            print(success_message)
+            return success_message
+        
         except mysql.connector.IntegrityError as e:
-            print(f"Error: Team {teamID} is already in Bracket {bracketID}.")
-
+            error_message = f"Error: Team {teamID} is already in Bracket {bracketID}."
+            print(error_message)
+            return error_message
 
     # Removes team from specific bracket
     def removeTeamFromBracket(self, teamID, bracketID):
@@ -106,12 +127,19 @@ class Bracket():
         """
         values = (teamID, bracketID)
 
-        with connectToDatabase() as conn:
-            with conn.cursor() as cursor:
-                cursor.execute(remove_query, values)
-                conn.commit()
-
-        print(f"Team with ID {teamID} now removed from Bracket Match {bracketID}.")    
+        try: 
+            with connectToDatabase() as conn:
+                with conn.cursor() as cursor:
+                    cursor.execute(remove_query, values)
+                    conn.commit()
+            success_message = f"Team with ID {teamID} now removed from Bracket Match {bracketID}."
+            print(success_message)
+            return success_message
+        
+        except mysql.connector.IntegrityError as e:
+            error_message = f"Error: Team with ID {teamID} not found in Bracket Match {bracketID}."
+            print(error_message)
+            return error_message  
     
     # Displays all the team participants in the bracket
     def displayTeams(self, bracketID):
@@ -124,14 +152,24 @@ class Bracket():
         """
         values = (bracketID,)
 
-        with connectToDatabase() as conn:
-            with conn.cursor() as cursor:
-                cursor.execute(list_query, values)
-                teams = cursor.fetchall()
+        try:
+            with connectToDatabase() as conn:
+                with conn.cursor() as cursor:
+                    cursor.execute(list_query, values)
+                    teams = cursor.fetchall()
 
-        print("Teams in Bracket:", bracketID)
-        for team in teams:
-            print(f"Team Name: {team[0]}, Players: {team[1]}, Bracket Number: {team[2]}")
+            success_message = f"Teams in Bracket: {bracketID} found."
+            print(success_message)
+        
+            for team in teams:
+                print(f"Team Name: {team[0]}, Players: {team[1]}, Bracket Number: {team[2]}")
+
+            return success_message
+
+        except mysql.connector.IntegrityError as e:
+            error_message = f"Error: No teams found in Bracket: {bracketID}."
+            print(error_message)
+            return error_message  
 
     # Assign bracket number for a team
     # Ex. bracket has 2 brackets for 4 teams, 2 teams per bracket so TM01 and TM02 are in bracket 1, etc.
