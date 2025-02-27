@@ -161,6 +161,38 @@ def login():
     else:
         return jsonify({"error": "Invalid email or password"}), 401
 
+# API route for creating bracket
+@app.route('/api/brackets', methods=['POST'])
+def create_bracket():
+    try:
+        data = request.json
+        bracket_id = str(uuid.uuid4())[:20]
+        bracket_name = data['bracketName']
+        event_type = data['eventType']
+        bracket_type = data['bracketType']
+        user_id = data['userID']
+
+        conn = mysql.connector.connect(**DB_CONFIG)
+        cursor = conn.cursor()
+
+        # debugging stuff
+        print("Inserting bracket:", bracket_id, bracket_name, event_type, bracket_type, user_id)
+
+        query = "INSERT INTO bracket (bracketID, bracketName, eventType, bracketType, userID) VALUES (%s, %s, %s, %s, %s)"
+        values = (bracket_id, bracket_name, event_type, bracket_type, user_id)
+
+        cursor.execute(query, values)
+        conn.commit()
+
+        cursor.close()
+        conn.close()
+
+        return jsonify({"message": "Bracket created successfully", "bracketID": bracket_id}), 201
+
+    # more debugging stuff, check logs for error if its not getting properly inserted
+    except Exception as e:
+        print("Error:", str(e)) 
+        return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
     app.run(debug=True)

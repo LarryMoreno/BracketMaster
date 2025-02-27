@@ -23,6 +23,9 @@ const HomePage = () => {
         <Link to="/registration" className="px-6 py-3 bg-gray-500 text-white rounded-lg shadow-md hover:bg-gray-600">
           Registration
         </Link>
+        <Link to="/bracket" className="px-6 py-3 bg-gray-500 text-white rounded-lg shadow-md hover:bg-gray-600">
+          Bracket
+        </Link>
       </div>
     </div>
   );
