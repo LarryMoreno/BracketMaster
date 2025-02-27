@@ -23,6 +23,9 @@ To run the pytests, click on the test_unittestfile_pytest.py and click to config
 Make sure pytest is the is the testing framework with ctrl + Shift + P and typing Python: Configure Test
 Additionally make sure the python is the designated interpreter
 
+<h3>Jest Unit Testing</h3>
+Make sure you are in the frontend directory and have the necessary dependencies installed for jest (run 'npm i' if you don't). Then run 'npm run test' in your console to run all of the tests
+
 <h3>Create A mySQL Workbench Connection</h3>
 hostname: tramway.proxy.rlway.net
 port: 51041
