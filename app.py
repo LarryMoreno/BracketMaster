@@ -6,7 +6,9 @@ import uuid
 from flask_jwt_extended import JWTManager, create_access_token
 
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "*"}})
+
+CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True, allow_headers=["Content-Type", "Authorization"], methods=["GET", "POST", "OPTIONS"])
+
 
 # JWT secret key for user auth
 app.config['JWT_SECRET_KEY'] = 'my_jwt_secret_key'
