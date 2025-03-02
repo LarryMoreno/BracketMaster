@@ -5,8 +5,8 @@ from bracket import Bracket
 #testing that a bracket can be created
 def test_bracket_creation():
     
-    bracketID = "BK00"
-    bracketName = "Tournament 2025"
+    bracketID = "BK001"
+    bracketName = "THE Tournament"
     eventType = "Single Elimination"
     bracketType = "Public"
     userID = "USER001"
@@ -15,6 +15,71 @@ def test_bracket_creation():
     result = bracket.createBracket(bracketID, bracketName, eventType, bracketType, userID)
     
     assert result == f"Bracket {bracketName} added successfully."
+
+#testing that a bracket cannot be created when value bracketType is missing input
+def test_bracket_creation_no_input1():
+
+    bracketID = "BK24"
+    bracketName = "Tournament of Champions"
+    eventType = "Single Elimination"
+    userID = "USER001"
+
+    bracket = Bracket()
+    result = bracket.createBracket(bracketID, bracketName, eventType, userID)
+    
+    assert result == f"TypeError: At least one value is missing an input"
+
+#testing that a bracket cannot be created when value bracketID is missing input
+def test_bracket_creation_no_input2():
+
+    bracketName = "Tournament of Champions"
+    eventType = "Single Elimination"
+    bracketType = 'Standard'
+    userID = "USER001"
+
+    bracket = Bracket()
+    result = bracket.createBracket(bracketName, eventType, bracketType, userID)
+    
+    assert result == f"TypeError: At least one value is missing an input"
+
+#testing that a bracket cannot be created when value bracketName is missing input
+def test_bracket_creation_no_input3():
+
+    bracketID = "BK24"
+    eventType = "Single Elimination"
+    bracketType = 'Standard'
+    userID = "USER001"
+
+    bracket = Bracket()
+    result = bracket.createBracket(bracketID, eventType, bracketType, userID)
+    
+    assert result == f"TypeError: At least one value is missing an input"
+
+#testing that a bracket cannot be created when value eventType is missing input
+def test_bracket_creation_no_input4():
+
+    bracketID = "BK24"
+    bracketName = 'New Tournament'
+    bracketType = 'Standard'
+    userID = "USER001"
+
+    bracket = Bracket()
+    result = bracket.createBracket(bracketID, bracketName, bracketType, userID)
+    
+    assert result == f"TypeError: At least one value is missing an input"
+
+#testing that a bracket cannot be created when value userID is missing input
+def test_bracket_creation_no_input5():
+
+    bracketID = "BK24"
+    bracketName = 'New Tournament'
+    eventType = 'Single Elimination'
+    bracketType = 'Standard'
+
+    bracket = Bracket()
+    result = bracket.createBracket(bracketID, bracketName, eventType, bracketType)
+    
+    assert result == f"TypeError: At least one value is missing an input"
 
 #testing that a bracket cannot be created where a bracket already exists
 def test_bracket_creation_already_exists():
@@ -54,6 +119,71 @@ def test_team_creation():
 
     assert result == f"Team {teamName} added successfully."
 
+#testing that a team cannot be created when teamID is missing input
+def test_team_creation_no_input1():
+
+    teamName = 'FourPF'
+    teamPlayerCount = '10'
+    teamLocation = 5
+    teamLeader = 'Yours Truly'
+
+    bracket = Bracket()
+    result = bracket.createTeam(teamName, teamPlayerCount, teamLocation, teamLeader)
+
+    assert result == f"TypeError: At least one value is missing an input"
+
+#testing that a team cannot be created when teamName is missing input
+def test_team_creation_no_input2():
+
+    teamID = 'T001'
+    teamPlayerCount = '10'
+    teamLocation = 5
+    teamLeader = 'Yours Truly'
+
+    bracket = Bracket()
+    result = bracket.createTeam(teamID, teamPlayerCount, teamLocation, teamLeader)
+
+    assert result == f"TypeError: At least one value is missing an input"
+
+#testing that a team cannot be created when teamPlayerCount is missing input
+def test_team_creation_no_input3():
+
+    teamID = 'T001'
+    teamName = 'FourPF'
+    teamLocation = 5
+    teamLeader = 'Yours Truly'
+
+    bracket = Bracket()
+    result = bracket.createTeam(teamID, teamName, teamLocation, teamLeader)
+
+    assert result == f"TypeError: At least one value is missing an input"
+
+#testing that a team cannot be created when teamLocation is missing input
+def test_team_creation_no_input4():
+
+    teamID = 'T001'
+    teamName = 'FourPF'
+    teamPlayerCount = '10'
+    teamLeader = 'Yours Truly'
+
+    bracket = Bracket()
+    result = bracket.createTeam(teamID, teamName, teamPlayerCount, teamLeader)
+
+    assert result == f"TypeError: At least one value is missing an input"
+
+#testing that a team cannot be created when teamLeader is missing input
+def test_team_creation_no_input5():
+
+    teamID = 'T001'
+    teamName = 'FourPF'
+    teamPlayerCount = '10'
+    teamLocation = 5
+
+    bracket = Bracket()
+    result = bracket.createTeam(teamID, teamName, teamPlayerCount, teamLocation)
+
+    assert result == f"TypeError: At least one value is missing an input"
+
 #testing that a team cannot be created that already exists
 def test_team_creation_already_exists():
 
@@ -88,6 +218,26 @@ def test_add_team_to_bracket():
     result = bracket.addTeamToBracket(teamID, bracketID)
 
     assert result == f"Team with ID {teamID} now assigned to Bracket Match {bracketID}."
+
+#testing that a team cannot be added to a bracket where the teamID input is not given
+def test_add_team_to_bracket_no_input1():
+
+    bracketID = 'BK01'
+
+    bracket = Bracket()
+    result = bracket.addTeamToBracket(bracketID)
+
+    assert result == f"TypeError: At least one value is missing an input"
+
+#testing that a team cannot be added to a bracket where the bracketID input is not given
+def test_add_team_to_bracket_no_input2():
+
+    teamID = 'TM08'
+
+    bracket = Bracket()
+    result = bracket.addTeamToBracket(teamID)
+
+    assert result == f"TypeError: At least one value is missing an input"
 
 #testing that a team cannot be added to a bracket where the team does not exist
 def test_add_team_non_existent_bracket():

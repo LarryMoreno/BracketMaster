@@ -42,7 +42,11 @@ class NoTeamsFoundInBracketError(Exception):
 class Bracket():
 
     # Adds an entry to the bracket table essentially creating a tournament 
-    def createBracket(self, bracketID, bracketName, eventType, bracketType, userID):
+    def createBracket(self, bracketID=None, bracketName=None, eventType=None, bracketType=None, userID=None):
+        
+        if bracketID is None or bracketName is None or eventType is None or bracketType is None or userID is None:
+            return f"TypeError: At least one value is missing an input"
+        
         bracket_query = """
         INSERT INTO bracket (bracketID, bracketName, eventType, bracketType, userID)
         VALUES (%s, %s, %s, %s, %s)
@@ -82,7 +86,11 @@ class Bracket():
         
 
     # Adds team into database table team    
-    def createTeam(self, teamID, teamName, teamPlayerCount, teamLocation, teamLeader):
+    def createTeam(self, teamID=None, teamName=None, teamPlayerCount=None, teamLocation=None, teamLeader=None):
+        
+        if teamID is None or teamName is None or teamPlayerCount is None or teamLocation is None or teamLeader is None:
+            return f"TypeError: At least one value is missing an input"
+
         insert_query = """
         INSERT INTO team (teamID, teamName, teamPlayerCount, teamLocation, teamLeader)
         VALUES (%s, %s, %s, %s, %s)
@@ -121,7 +129,10 @@ class Bracket():
             return success_message
 
     # Adds team to specific bracket
-    def addTeamToBracket(self, teamID, bracketID):
+    def addTeamToBracket(self, teamID=None, bracketID=None):
+
+        if teamID is None or bracketID is None:
+            return f"TypeError: At least one value is missing an input"
 
         team_query = """
         INSERT INTO teambracket (teamID, bracketID)

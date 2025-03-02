@@ -27,17 +27,32 @@ class BracketGame(Bracket):
 
         if total > 0 and (total & (total - 1)) == 0:
             print(f"{total} Valid number of teams")
+            return
         else:
             print(f"{total} Invalid number  of teams")
             return
         
-        self.assignAllBracketNumber(bracketID)
+        #self.assignAllBracketNumber(bracketID)
 
-        while(total >  0):
-            print("------------------------------------")
-            print(f"ROUND {self.currentRound}")
-            self.nextRound(bracketID)
+        # while(total >  0):
+        #     print("------------------------------------")
+        #     print(f"ROUND {self.currentRound}")
+        #     self.nextRound(bracketID)
+        #     total = self.getTotalBrackets(bracketID)
+    
+    #Choosing between if the user wants to have the teams randomly or manually assign placements for teams
+    def teamPlacement(self, bracketID, teamID):
+
+        placeHolder = False
+
+        #if the randomly assign placements button is clicked, assign all teams a placement value
+        if placeHolder is True:
+            self.assignAllBracketNumber(bracketID)
+        
+        #else, iterate through all the teams of the bracket and have them manually assigned
+        else:
             total = self.getTotalBrackets(bracketID)
+        return
 
     # Manages moving/removing teams to next round until winner is found
     def nextRound(self, bracketID):

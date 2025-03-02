@@ -196,5 +196,10 @@ def create_bracket():
         print("Error:", str(e)) 
         return jsonify({"error": str(e)}), 500
 
+#page to begin the bracket process
+@app.route('/beginBracket', methods=['POST'])
+def begin_Bracket():
+    return
+
 if __name__ == '__main__':
     app.run(debug=True)
