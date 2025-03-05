@@ -46,7 +46,7 @@ class Bracket():
         
         if bracketID is None or bracketName is None or eventType is None or bracketType is None or userID is None:
             return f"TypeError: At least one value is missing an input"
-        
+
         bracket_query = """
         INSERT INTO bracket (bracketID, bracketName, eventType, bracketType, userID)
         VALUES (%s, %s, %s, %s, %s)
@@ -68,19 +68,19 @@ class Bracket():
             return error_message
 
     # Removes bracket from database table bracket. This also removes any assigned entried in teambracket table
-    def deleteBracket(self, bracketID):
+    def deleteBracket(self, bracketName):
         delete_query = """
         DELETE FROM bracket
-        WHERE bracketID = %s
+        WHERE bracketName = %s
         """
-        values = (bracketID,)
+        values = (bracketName,)
 
         with connectToDatabase() as conn:
             with conn.cursor() as cursor:
                 cursor.execute(delete_query, values)
                 conn.commit()
                 
-            success_message = f"Bracket {bracketID} deleted successfully."
+            success_message = f"Bracket {bracketName} deleted successfully."
             print(success_message)
             return success_message
         

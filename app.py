@@ -4,6 +4,7 @@ import mysql.connector
 import bcrypt
 import uuid
 from flask_jwt_extended import JWTManager, create_access_token
+from bracket import Bracket
 
 app = Flask(__name__)
 
@@ -174,31 +175,29 @@ def create_bracket():
         bracket_type = data['bracketType']
         user_id = data['userID']
 
-        conn = mysql.connector.connect(**DB_CONFIG)
-        cursor = conn.cursor()
+        bracket = Bracket()
+        bracket.createBracket(bracket_id, bracket_name, event_type, bracket_type, user_id)
 
-        # debugging stuff
-        print("Inserting bracket:", bracket_id, bracket_name, event_type, bracket_type, user_id)
-
-        query = "INSERT INTO bracket (bracketID, bracketName, eventType, bracketType, userID) VALUES (%s, %s, %s, %s, %s)"
-        values = (bracket_id, bracket_name, event_type, bracket_type, user_id)
-
-        cursor.execute(query, values)
-        conn.commit()
-
-        cursor.close()
-        conn.close()
-
-        return jsonify({"message": "Bracket created successfully", "bracketID": bracket_id}), 201
+        return jsonify({"message": "Bracket created successfully"}), 201
 
     # more debugging stuff, check logs for error if its not getting properly inserted
     except Exception as e:
         print("Error:", str(e)) 
         return jsonify({"error": str(e)}), 500
 
-#page to begin the bracket process
-@app.route('/beginBracket', methods=['POST'])
-def begin_Bracket():
+#page to remove a bracket
+@app.route('/api/RemoveBracket', methods=['POST'])
+def remove_bracket():
+    return
+
+#page to create a team
+@app.route('/api/CreateTeam', methods=['POST'])
+def create_team():
+    return
+
+#page to add/remove team from bracket
+@app.route('/api/Add-RemoveTeam', methods=['POST'])
+def add_remove_team():
     return
 
 if __name__ == '__main__':

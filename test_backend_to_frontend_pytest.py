@@ -280,3 +280,30 @@ def test_account_login_email_does_not_exist(client):
 
     assert response.status_code == 401
     assert response.json['error'] == 'Invalid email or password'
+
+#testing that a bracket can be created
+def test_bracket_creation(client):
+    json_data = {
+        
+        'bracketName' : 'appTest',
+        'eventType' : 'anothertestgang',
+        'bracketType' : 'Single Elimination',
+        'userID' : 'USER001',
+    }
+    response = client.post('/api/brackets', json=json_data)
+
+    assert response.status_code == 201
+    assert response.json['message'] == "Bracket created successfully"
+
+#testing that a bracket cannot be created as the bracket already exists
+def test_bracket_creation_already_exists(client):
+    json_data = {
+        'bracketName' : 'appTest',
+        'eventType' : 'anothertestgang',
+        'bracketType' : 'Single Elimination',
+        'userID' : 'USER001',
+    }
+    response = client.post('/api/brackets', json=json_data)
+
+    assert response.status_code == 440
+    assert response.json['error'] == "Bracket already exists"
