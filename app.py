@@ -33,6 +33,7 @@ DB_CONFIG = {
 #password - the password designated to the user account
 #email - the email account that belongs to the user
 #role - the designated permissions for when a user is registered (always will be set to member)
+
 def register_user():
     data = request.json  # frontend data
 
@@ -141,6 +142,11 @@ def register_user():
 
 
 @app.route('/login', methods=['POST'])
+
+#login() - the function on the /login page for a user to login into the BracketMaster system
+#email - the email account that belongs to the user
+#password - the password designated to the user account
+
 def login():
     data = request.json
     email = data["email"]
@@ -158,6 +164,7 @@ def login():
     cursor.close()
     conn.close()
 
+    #testing if the login credentials are valid
     if user and bcrypt.checkpw(password.encode('utf-8'), user["password"].encode('utf-8')):
         access_token = create_access_token(identity={"userID": user["userID"], "role": user["role"]})
         return jsonify({"message": "Login successful", "token": access_token}), 200
@@ -166,18 +173,36 @@ def login():
 
 # API route for creating bracket
 @app.route('/api/brackets', methods=['POST'])
+
+#create_bracket() - the function on the /bracket page to allow a user to create a bracket
+#bracket_id - the ID of the bracket that is randomly generated
+#bracket_name - the name of the bracket
+#event_type - the type of event being hosted (gaming, soccer, football, chess, etc)
+#bracket_type - the style of the bracket (bracketmaster only supports single elimination)
+#user_id - the ID of the admin user that is hosting the bracket
+
 def create_bracket():
+
+    data = request.json
+    bracket_id = str(uuid.uuid4())[:20]
+    bracket_name = data['bracketName']
+    event_type = data['eventType']
+    bracket_type = data['bracketType']
+    user_id = data['userID']
+
+    #testing if the bracketName already exists in bracket
+    conn = mysql.connector.connect(**DB_CONFIG)
+    cursor = conn.cursor()
+    cursor.execute("SELECT bracketName FROM bracket WHERE bracketName = %s", (bracket_name,))
+    if cursor.fetchone():
+        return jsonify({"error": "Bracket name already exists"}), 440
+    
+    cursor.close()
+    conn.close()
+
     try:
-        data = request.json
-        bracket_id = str(uuid.uuid4())[:20]
-        bracket_name = data['bracketName']
-        event_type = data['eventType']
-        bracket_type = data['bracketType']
-        user_id = data['userID']
-
         bracket = Bracket()
-        bracket.createBracket(bracket_id, bracket_name, event_type, bracket_type, user_id)
-
+        result = bracket.createBracket(bracket_id, bracket_name, event_type, bracket_type, user_id)
         return jsonify({"message": "Bracket created successfully"}), 201
 
     # more debugging stuff, check logs for error if its not getting properly inserted

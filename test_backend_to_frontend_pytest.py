@@ -285,7 +285,7 @@ def test_account_login_email_does_not_exist(client):
 def test_bracket_creation(client):
     json_data = {
         
-        'bracketName' : 'appTest',
+        'bracketName' : 'appTes',
         'eventType' : 'anothertestgang',
         'bracketType' : 'Single Elimination',
         'userID' : 'USER001',
@@ -306,4 +306,4 @@ def test_bracket_creation_already_exists(client):
     response = client.post('/api/brackets', json=json_data)
 
     assert response.status_code == 440
-    assert response.json['error'] == "Bracket already exists"
+    assert response.json['error'] == "Bracket name already exists"

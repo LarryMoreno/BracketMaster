@@ -63,7 +63,7 @@ class Bracket():
             return success_message
         
         except mysql.connector.IntegrityError as e:
-            error_message = f"Error: Bracket {bracketName} is already in Bracket table."
+            error_message = f"Error entering bracket: {bracketName}"
             print(error_message)
             return error_message
 

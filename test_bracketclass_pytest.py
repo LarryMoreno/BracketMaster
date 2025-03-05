@@ -5,8 +5,8 @@ from bracket import Bracket
 #testing that a bracket can be created
 def test_bracket_creation():
     
-    bracketID = "BK001"
-    bracketName = "THE Tournament"
+    bracketID = "BK0001"
+    bracketName = "THE Tournament 2.0"
     eventType = "Single Elimination"
     bracketType = "Public"
     userID = "USER001"
@@ -93,7 +93,7 @@ def test_bracket_creation_already_exists():
     bracket = Bracket()
     result = bracket.createBracket(bracketID, bracketName, eventType, bracketType, userID)
     
-    assert result == f"Error: Bracket {bracketName} is already in Bracket table."
+    assert result == f"Error entering bracket: {bracketName}"
 
 #testing that a bracket can be deleted
 def test_bracket_deletion():
