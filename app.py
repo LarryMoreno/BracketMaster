@@ -251,24 +251,6 @@ def create_team():
         print("Error:", str(e)) 
         return jsonify({"error": str(e)}), 500
 
-#page to add team to bracket
-@app.route('/api/AddTeam', methods=['POST'])
-def add__team():
-    
-    data=request.json
-    teamID = data['teamID']
-    bracketID = data['bracketID']
-
-    try:
-        bracket = Bracket()
-        result = bracket.addTeamToBracket(teamID, bracketID)
-        return jsonify({"message": "Team successfully added to bracket"}), 203
-    
-    # more debugging stuff, check logs for error if its not getting properly inserted
-    except Exception as e:
-        print("Error:", str(e)) 
-        return jsonify({"error": str(e)}), 500
-
 #page to remove team from bracket
 @app.route('/api/RemoveTeam', methods=['POST'])
 def remove_team():
