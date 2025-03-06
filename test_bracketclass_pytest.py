@@ -98,12 +98,12 @@ def test_bracket_creation_already_exists():
 #testing that a bracket can be deleted
 def test_bracket_deletion():
     
-    bracketName = 'TestBracket'
+    bracketID = 'BK0001'
 
     bracket = Bracket()
-    result = bracket.deleteBracket(bracketName)
+    result = bracket.deleteBracket(bracketID)
     
-    assert result == f"Bracket {bracketName} deleted successfully."
+    assert result == f"Bracket {bracketID} deleted successfully."
 
 #testing that a team can be created
 def test_team_creation():

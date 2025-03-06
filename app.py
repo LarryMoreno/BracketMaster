@@ -175,7 +175,7 @@ def login():
 @app.route('/api/brackets', methods=['POST'])
 
 #create_bracket() - the function on the /bracket page to allow a user to create a bracket
-#bracket_id - the ID of the bracket that is randomly generated
+#bracket_id - the ID of the bracket
 #bracket_name - the name of the bracket
 #event_type - the type of event being hosted (gaming, soccer, football, chess, etc)
 #bracket_type - the style of the bracket (bracketmaster only supports single elimination)
@@ -184,7 +184,7 @@ def login():
 def create_bracket():
 
     data = request.json
-    bracket_id = str(uuid.uuid4())[:20]
+    bracket_id = str(uuid.uuid4())[:10] 
     bracket_name = data['bracketName']
     event_type = data['eventType']
     bracket_type = data['bracketType']
@@ -212,18 +212,80 @@ def create_bracket():
 
 #page to remove a bracket
 @app.route('/api/RemoveBracket', methods=['POST'])
-def remove_bracket():
-    return
+def remove_bracket(): 
+    
+    data = request.json
+    bracketID = data['bracketID']
+
+    try:
+        bracket = Bracket()
+        result = bracket.deleteBracket(bracketID)
+        return jsonify({"message": "Bracket deleted successfuly"}), 202
+    
+    # more debugging stuff, check logs for error if its not getting properly inserted
+    except Exception as e:
+        print("Error:", str(e)) 
+        return jsonify({"error": str(e)}), 500
+
 
 #page to create a team
-@app.route('/api/CreateTeam', methods=['POST'])
+@app.route('/api/create-team', methods=['POST'])
 def create_team():
-    return
 
-#page to add/remove team from bracket
-@app.route('/api/Add-RemoveTeam', methods=['POST'])
-def add_remove_team():
-    return
+    data = request.json
+    teamID = str(uuid.uuid4())[:10] 
+    teamName = data['teamName']
+    teamPlayerCount = data['teamPlayerCount']
+    teamLocation = data['teamLocation']
+    teamLeader = data['teamLeader']
+    bracketID = data['bracketID']
+
+    try:
+        bracket = Bracket()
+        bracket.createTeam(teamID, teamName, teamPlayerCount, teamLocation, teamLeader)
+        bracket.addTeamToBracket(teamID, bracketID)
+        return jsonify({"message": "Team successfuly created and added to bracket"}), 202
+    
+    # more debugging stuff, check logs for error if its not getting properly inserted
+    except Exception as e:
+        print("Error:", str(e)) 
+        return jsonify({"error": str(e)}), 500
+
+#page to add team to bracket
+@app.route('/api/AddTeam', methods=['POST'])
+def add__team():
+    
+    data=request.json
+    teamID = data['teamID']
+    bracketID = data['bracketID']
+
+    try:
+        bracket = Bracket()
+        result = bracket.addTeamToBracket(teamID, bracketID)
+        return jsonify({"message": "Team successfully added to bracket"}), 203
+    
+    # more debugging stuff, check logs for error if its not getting properly inserted
+    except Exception as e:
+        print("Error:", str(e)) 
+        return jsonify({"error": str(e)}), 500
+
+#page to remove team from bracket
+@app.route('/api/RemoveTeam', methods=['POST'])
+def remove_team():
+
+    data=request.json
+    teamID = data['teamID']
+    bracketID = data['bracketID']
+
+    try:
+        bracket = Bracket()
+        result = bracket.removeTeamFromBracket(teamID, bracketID)
+        return jsonify({"message": "Team successfully removed from bracket"}), 203
+    
+    # more debugging stuff, check logs for error if its not getting properly inserted
+    except Exception as e:
+        print("Error:", str(e)) 
+        return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
     app.run(debug=True)
