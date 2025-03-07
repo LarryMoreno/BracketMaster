@@ -311,6 +311,20 @@ def test_bracket_creation_already_exists(client):
 #testing that a team can be created and added to a bracket
 def test_team_creation_bracket_add(client):
     json_data ={
+        'teamName' : 'CAMelss',
+        'teamPlayerCount' : '4',
+        'teamLocation' : '1',
+        'teamLeader' : 'Carlos',
+        'bracketID' : 'BK12'
+    }
+    response = client.post('/api/create-team', json=json_data)
+
+    assert response.status_code == 202
+    assert response.json['message'] == "Team successfuly created and added to bracket"
+
+#testing that a team cannot be added to a bracket where the team is already in the bracket
+def test_team_creation_bracket_add_team_in_bracket(client):
+    json_data ={
         'teamName' : 'CamelsS',
         'teamPlayerCount' : '4',
         'teamLocation' : '1',
@@ -319,24 +333,10 @@ def test_team_creation_bracket_add(client):
     }
     response = client.post('/api/create-team', json=json_data)
 
-    assert response.status_code == 202
-    assert response.json['message'] == "Team successfuly created and added to bracket"
-
-#testing that a team which already exists cannot be created and added to a bracket
-def test_team_creation_bracket_add_already_exists(client):
-    json_data ={
-        'teamName' : 'Camels',
-        'teamPlayerCount' : '4',
-        'teamLocation' : '1',
-        'teamLeader' : 'Carlos',
-        'bracketID' : 'BK13'
-    }
-    response = client.post('/api/create-team', json=json_data)
-
     assert response.status_code == 441
-    assert response.json['error'] == "Team name already exists"
+    assert response.json['error'] == "Team already exists in bracket"
 
-#testing that a team cannot be added to a bracketID that does not exist
+#testing that a team cannot be added to a bracket that does not exist
 def test_team_creation_bracket_add_no_bracket(client):
     json_data ={
         'teamName' : 'Camels 2.0',
@@ -363,7 +363,7 @@ def test_bracket_delete(client):
 #testing that a bracket cannot be deleted if the bracketID does not exist
 def test_bracket_delete_non_existent(client):
     json_data = {
-        'bracketID' : 'testing'
+        'bracketID' : 'testing',
     }
     response = client.post('/api/remove-bracket', json=json_data)
 
@@ -373,8 +373,8 @@ def test_bracket_delete_non_existent(client):
 #testing that a team can be removed from a bracket
 def test_remove_team_bracket(client):
     json_data = {
-        'bracketID' : 'BK11',
-        'teamID' : '57363725-f'
+        'bracketID' : 'BK02',
+        'teamID' : 'TM08',
     }
     response = client.post('/api/remove-team', json=json_data)
 

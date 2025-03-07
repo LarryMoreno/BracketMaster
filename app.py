@@ -258,14 +258,15 @@ def create_team():
     teamLocation = data['teamLocation']
     teamLeader = data['teamLeader']
     bracketID = data['bracketID']
-
-    #testing if the teamName already exists in team
+    
+    #testing that a team cannot be added to a bracket where the team exists in the bracket
     conn = mysql.connector.connect(**DB_CONFIG)
     cursor = conn.cursor()
-    cursor.execute("SELECT teamName FROM team WHERE teamName = %s", (teamName,))
+    cursor.execute("SELECT t.teamName, bracketID FROM team as t inner join teambracket on t.teamID"
+    "= teambracket.teamID WHERE teamName = %s and bracketID = %s", (teamName,bracketID))
     if cursor.fetchone():
-        return jsonify({"error": "Team name already exists"}), 441
-    
+        return jsonify({"error": "Team already exists in bracket"}), 441
+
     #testing that a team cannot be added to a bracket that does not exist
     conn = mysql.connector.connect(**DB_CONFIG)
     cursor = conn.cursor()
@@ -285,7 +286,7 @@ def create_team():
         return jsonify({"error": str(e)}), 500
 
 #page to remove team from bracket
-@app.route('/api/RemoveTeam', methods=['POST'])
+@app.route('/api/remove-team', methods=['POST'])
 def remove_team():
 
     data=request.json
@@ -295,7 +296,7 @@ def remove_team():
     try:
         bracket = Bracket()
         result = bracket.removeTeamFromBracket(teamID, bracketID)
-        return jsonify({"message": "Team successfully removed from bracket"}), 203
+        return jsonify({"message": "Team successfully removed from bracket"}), 204
     
     # more debugging stuff, check logs for error if its not getting properly inserted
     except Exception as e:
