@@ -307,3 +307,76 @@ def test_bracket_creation_already_exists(client):
 
     assert response.status_code == 440
     assert response.json['error'] == "Bracket name already exists"
+
+#testing that a team can be created and added to a bracket
+def test_team_creation_bracket_add(client):
+    json_data ={
+        'teamName' : 'CamelsS',
+        'teamPlayerCount' : '4',
+        'teamLocation' : '1',
+        'teamLeader' : 'Carlos',
+        'bracketID' : 'BK13'
+    }
+    response = client.post('/api/create-team', json=json_data)
+
+    assert response.status_code == 202
+    assert response.json['message'] == "Team successfuly created and added to bracket"
+
+#testing that a team which already exists cannot be created and added to a bracket
+def test_team_creation_bracket_add_already_exists(client):
+    json_data ={
+        'teamName' : 'Camels',
+        'teamPlayerCount' : '4',
+        'teamLocation' : '1',
+        'teamLeader' : 'Carlos',
+        'bracketID' : 'BK13'
+    }
+    response = client.post('/api/create-team', json=json_data)
+
+    assert response.status_code == 441
+    assert response.json['error'] == "Team name already exists"
+
+#testing that a team cannot be added to a bracketID that does not exist
+def test_team_creation_bracket_add_no_bracket(client):
+    json_data ={
+        'teamName' : 'Camels 2.0',
+        'teamPlayerCount' : '4',
+        'teamLocation' : '1',
+        'teamLeader' : 'Carlos',
+        'bracketID' : 'BK-1'
+    }
+    response = client.post('/api/create-team', json=json_data)
+
+    assert response.status_code == 442
+    assert response.json['error'] == "BracketID entered does not exist"
+
+#testing that a bracket can be deleted
+def test_bracket_delete(client):
+    json_data = {
+        'bracketID' : 'BK10'
+    }
+    response = client.post('/api/remove-bracket', json=json_data)
+
+    assert response.status_code == 203
+    assert response.json['message'] == 'Bracket successfully deleted'
+
+#testing that a bracket cannot be deleted if the bracketID does not exist
+def test_bracket_delete_non_existent(client):
+    json_data = {
+        'bracketID' : 'testing'
+    }
+    response = client.post('/api/remove-bracket', json=json_data)
+
+    assert response.status_code == 443
+    assert response.json['error'] == 'BracketID entered does not exist'
+
+#testing that a team can be removed from a bracket
+def test_remove_team_bracket(client):
+    json_data = {
+        'bracketID' : 'BK11',
+        'teamID' : '57363725-f'
+    }
+    response = client.post('/api/remove-team', json=json_data)
+
+    assert response.status_code == 204
+    assert response.json['message'] == 'Team successfully removed from bracket'

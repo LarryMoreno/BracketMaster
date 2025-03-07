@@ -211,16 +211,26 @@ def create_bracket():
         return jsonify({"error": str(e)}), 500
 
 #page to remove a bracket
-@app.route('/api/RemoveBracket', methods=['POST'])
+@app.route('/api/remove-bracket', methods=['POST'])
+
+#removeBracket() - the function on the /remove-bracket page to remove a bracket from the system
+#bracketID - the ID of the bracket to be removed
+
 def remove_bracket(): 
     
     data = request.json
     bracketID = data['bracketID']
 
+    conn = mysql.connector.connect(**DB_CONFIG)
+    cursor = conn.cursor()
+    cursor.execute("SELECT bracketID FROM bracket WHERE bracketID = %s", (bracketID,))
+    if not cursor.fetchone():
+        return jsonify({"error": "BracketID entered does not exist"}), 443
+    
     try:
         bracket = Bracket()
         result = bracket.deleteBracket(bracketID)
-        return jsonify({"message": "Bracket deleted successfuly"}), 202
+        return jsonify({"message": "Bracket successfully deleted"}), 203
     
     # more debugging stuff, check logs for error if its not getting properly inserted
     except Exception as e:
@@ -230,6 +240,15 @@ def remove_bracket():
 
 #page to create a team
 @app.route('/api/create-team', methods=['POST'])
+
+#create_team() - creates a team from user input and adds the team to the given bracket
+#teamID - the ID of the team
+#teamName - the name of the team being entered
+#teamPlayerCount - the number of players the team has
+#teamLocation - the spot on the bracket where the team belongs (the seeding)
+#teamLeader - the name of the leader of the team
+#bracketID - the ID of the bracket the team is being added to
+
 def create_team():
 
     data = request.json
@@ -239,6 +258,20 @@ def create_team():
     teamLocation = data['teamLocation']
     teamLeader = data['teamLeader']
     bracketID = data['bracketID']
+
+    #testing if the teamName already exists in team
+    conn = mysql.connector.connect(**DB_CONFIG)
+    cursor = conn.cursor()
+    cursor.execute("SELECT teamName FROM team WHERE teamName = %s", (teamName,))
+    if cursor.fetchone():
+        return jsonify({"error": "Team name already exists"}), 441
+    
+    #testing that a team cannot be added to a bracket that does not exist
+    conn = mysql.connector.connect(**DB_CONFIG)
+    cursor = conn.cursor()
+    cursor.execute("SELECT bracketID FROM bracket WHERE bracketID = %s", (bracketID,))
+    if not cursor.fetchone():
+        return jsonify({"error": "BracketID entered does not exist"}), 442
 
     try:
         bracket = Bracket()

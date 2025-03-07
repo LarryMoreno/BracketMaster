@@ -70,6 +70,20 @@ class Bracket():
     # Removes bracket from database table bracket. This also removes any assigned entried in teambracket table
     def deleteBracket(self, bracketID):
         delete_query = """
+        DELETE FROM teambracket
+        WHERE bracketID = %s
+        """
+        values = (bracketID,)
+
+        with connectToDatabase() as conn:
+            with conn.cursor() as cursor:
+                cursor.execute(delete_query, values)
+                conn.commit()
+                
+            success_message = f"Bracket {bracketID} deleted successfully."
+            print(success_message)
+        
+        delete_query = """
         DELETE FROM bracket
         WHERE bracketID = %s
         """
