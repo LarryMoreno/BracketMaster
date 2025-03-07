@@ -33,6 +33,9 @@ const HomePage = () => {
         <Link to="/remove-bracket" className="px-6 py-3 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600">
           Remove Bracket
         </Link>
+        <Link to="/remove-team" className="px-6 py-3 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600">
+          Remove Team
+        </Link>
       </div>
     </div>
   );
