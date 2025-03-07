@@ -1,3 +1,4 @@
+// jest-ignore
 import { Link } from "react-router-dom";
 
 // TODO: fix styling w/ tailwind css, read up on some more documentation

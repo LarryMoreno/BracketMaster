@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1740699344954" clover="3.2.0">
-  <project timestamp="1740699344954" name="All files">
-    <metrics statements="52" coveredstatements="43" conditionals="7" coveredconditionals="6" methods="13" coveredmethods="12" elements="72" coveredelements="61" complexity="0" loc="52" ncloc="52" packages="1" files="3" classes="3"/>
+<coverage generated="1741315765008" clover="3.2.0">
+  <project timestamp="1741315765008" name="All files">
+    <metrics statements="84" coveredstatements="75" conditionals="7" coveredconditionals="6" methods="23" coveredmethods="22" elements="114" coveredelements="103" complexity="0" loc="84" ncloc="84" packages="1" files="5" classes="5"/>
     <file name="CreateBracket.jsx" path="/Users/bokhari/Development/CS678/BracketMaster/frontend/src/pages/CreateBracket.jsx">
       <metrics statements="18" coveredstatements="11" conditionals="0" coveredconditionals="0" methods="6" coveredmethods="5"/>
       <line num="5" count="1" type="stmt"/>
@@ -22,6 +22,29 @@
       <line num="52" count="1" type="stmt"/>
       <line num="59" count="1" type="stmt"/>
       <line num="66" count="1" type="stmt"/>
+    </file>
+    <file name="CreateTeam.jsx" path="/Users/bokhari/Development/CS678/BracketMaster/frontend/src/pages/CreateTeam.jsx">
+      <metrics statements="20" coveredstatements="20" conditionals="0" coveredconditionals="0" methods="7" coveredmethods="7"/>
+      <line num="5" count="1" type="stmt"/>
+      <line num="7" count="14" type="stmt"/>
+      <line num="8" count="14" type="stmt"/>
+      <line num="9" count="14" type="stmt"/>
+      <line num="10" count="14" type="stmt"/>
+      <line num="11" count="14" type="stmt"/>
+      <line num="14" count="14" type="stmt"/>
+      <line num="15" count="2" type="stmt"/>
+      <line num="17" count="2" type="stmt"/>
+      <line num="25" count="2" type="stmt"/>
+      <line num="26" count="2" type="stmt"/>
+      <line num="30" count="1" type="stmt"/>
+      <line num="32" count="1" type="stmt"/>
+      <line num="33" count="1" type="stmt"/>
+      <line num="37" count="14" type="stmt"/>
+      <line num="45" count="3" type="stmt"/>
+      <line num="52" count="2" type="stmt"/>
+      <line num="59" count="2" type="stmt"/>
+      <line num="66" count="2" type="stmt"/>
+      <line num="73" count="2" type="stmt"/>
     </file>
     <file name="Login.jsx" path="/Users/bokhari/Development/CS678/BracketMaster/frontend/src/pages/Login.jsx">
       <metrics statements="15" coveredstatements="15" conditionals="0" coveredconditionals="0" methods="4" coveredmethods="4"/>
@@ -62,6 +85,21 @@
       <line num="44" count="1" type="stmt"/>
       <line num="45" count="1" type="stmt"/>
       <line num="49" count="14" type="stmt"/>
+    </file>
+    <file name="RemoveBracket.jsx" path="/Users/bokhari/Development/CS678/BracketMaster/frontend/src/pages/RemoveBracket.jsx">
+      <metrics statements="12" coveredstatements="12" conditionals="0" coveredconditionals="0" methods="3" coveredmethods="3"/>
+      <line num="5" count="1" type="stmt"/>
+      <line num="7" count="6" type="stmt"/>
+      <line num="10" count="6" type="stmt"/>
+      <line num="11" count="2" type="stmt"/>
+      <line num="13" count="2" type="stmt"/>
+      <line num="17" count="2" type="stmt"/>
+      <line num="18" count="2" type="stmt"/>
+      <line num="22" count="1" type="stmt"/>
+      <line num="24" count="1" type="stmt"/>
+      <line num="25" count="1" type="stmt"/>
+      <line num="29" count="6" type="stmt"/>
+      <line num="37" count="3" type="stmt"/>
     </file>
   </project>
 </coverage>
