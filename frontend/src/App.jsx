@@ -3,9 +3,11 @@ import HomePage from "./pages/HomePage";
 import RegisterForm from "./pages/RegisterForm";
 import Login from "./pages/Login";
 import BracketManager from "./pages/CreateBracket";
-import CreateTeamForm from "./pages/CreateTeam"
-import RemoveBracketForm from "./pages/RemoveBracket"
-import RemoveTeamForm from "./pages/RemoveTeam"
+import CreateTeamForm from "./pages/CreateTeam";
+import RemoveBracketForm from "./pages/RemoveBracket";
+import RemoveTeamForm from "./pages/RemoveTeam";
+import TournamentForm from "./pages/Tournament";
+import PreviewTournament from "./pages/PreviewTournament";
 
 // render the pages
 function App() {
@@ -19,6 +21,8 @@ function App() {
         <Route path="/create-team" element={<CreateTeamForm />} />
         <Route path="/remove-bracket" element={<RemoveBracketForm />} />
         <Route path="/remove-team" element={<RemoveTeamForm />} />
+        <Route path="/tournament" element={<TournamentForm />} />
+        <Route path="/preview-tournament/:bracketID" element={<PreviewTournament />} />
       </Routes>
     </Router>
   );

@@ -303,5 +303,35 @@ def remove_team():
         print("Error:", str(e)) 
         return jsonify({"error": str(e)}), 500
 
+#page to find a tournament
+@app.route('/tournament', methods=['POST'])
+def find_tournament():
+
+    data=request.json
+    bracketID = data['bracketID']
+
+ #testing that a team cannot be added to a bracket that does not exist
+    conn = mysql.connector.connect(**DB_CONFIG)
+    cursor = conn.cursor()
+    cursor.execute("SELECT bracketID FROM bracket WHERE bracketID = %s", (bracketID,))
+    if cursor.fetchone():
+        #go to next page
+        return jsonify({"message": "Bracket Found"}), 205
+    else:
+        return jsonify({"error": "Bracket Not Found"}), 450
+
+@app.route('/tournament/<bracketID>/teams', methods=['GET'])
+def get_teams(bracketID):
+    conn = mysql.connector.connect(**DB_CONFIG)
+    cursor = conn.cursor(dictionary=True)  # Return results as dictionaries
+
+    cursor.execute("SELECT t.teamName, t.teamLocation FROM team as t inner join teambracket on t.teamID"
+    "= teambracket.teamID WHERE bracketID = %s", (bracketID,))
+    teams = cursor.fetchall()
+
+    conn.close()
+
+    return jsonify({"teams": teams})
+
 if __name__ == '__main__':
     app.run(debug=True)
